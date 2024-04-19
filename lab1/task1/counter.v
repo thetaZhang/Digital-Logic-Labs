@@ -11,7 +11,7 @@ module counter#(
 
     reg [LOG_THRESHOLD - 1 : 0] counter;
 
-    always @(posedge clk or negedge rst_n) //敏感信号列表添加复位信号
+    always @(posedge clk ) 
     begin
         if(rst_n) //分支条件应该为复位
             counter <= counter + 1; //时序逻辑，非阻塞赋值
