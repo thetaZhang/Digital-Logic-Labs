@@ -1,6 +1,8 @@
-vsrc = *.v
+#匹配所有.v文件
+vsrc = $(wildcard *.v) 
 
-.PHONY: init
+
+.PHONY: init sim 
 
 init:
 	vlib work 
@@ -9,7 +11,6 @@ init:
 com: $(vsrc)
 	vlog $(vsrc)
 
-.PHONY: sim
 
 sim:
-	vsim vsim -voptargs=+acc+top_tb top_tb
+	vsim -voptargs=+acc top_tb
