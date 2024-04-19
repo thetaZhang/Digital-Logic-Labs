@@ -7,6 +7,7 @@ module dff(
 );
 
 always @(posedge clk or negedge rst_n) begin
+    q <= 0;
     if (~rst_n) 
         q <= 1'b0;
     else 

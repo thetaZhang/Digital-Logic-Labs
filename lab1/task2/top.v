@@ -10,7 +10,7 @@ wire d1,d2,d3; //3个dff的输入,从左到右对应#1#2#3
 
 wire q1,q2,q3; //3个dff的输出, 从左到右对应#1#2#3
 
-assign d1 = (~q1 & q2 & q3) | (q1 & ~q2) | (q1 | ~q3);
+assign d1 = (~q1 & q2 & q3) | (q1 & ~q2) | (q1 & ~q3);
 assign d2 = (q2 ^ q3);
 assign d3 = ~q3; 
 
