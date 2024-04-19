@@ -25,18 +25,18 @@ counter#(
     .THRESHOLD(COUNTER_THRESHOLD)
 )
 u_counter(
-    .clk   (clk_reg   ),
-    .rst_n (resetn_reg),
+    .clk   (clk_reg    ),
+    .rst_n (resetn_reg ),
     .out_en(out_en     )
-);
+); //分号逗号用法错误
 
 ReLU u_relu(
-    .clk_reg         (clk        ),
-    .resetn_reg      (rst_n      ),
-    .out_en          (out_en     ),
-    .relu_input_data (input_data ),
-    .relu_output_data(output_data)
-);
+    .clk        (clk_reg         ),
+    .rst_n      (resetn_reg      ),
+    .out_en     (out_en          ),
+    .input_data (relu_input_data ),
+    .output_data(relu_output_data)
+); // 分号逗号用法错误,模块端口和例化端口名字反了
 
 
 endmodule
