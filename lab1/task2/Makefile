@@ -7,9 +7,15 @@ vsrc = $(wildcard *.v)
 init:
 	vlib work 
 	vmap work work
+	mkdir .\build
 
 com: $(vsrc)
 	vlog $(vsrc)
+
+ivcom: $(vsrc)
+	iverilog -o .\build\top.out $(vsrc)
+	vvp -n .\build\top.out
+	
 
 
 sim:

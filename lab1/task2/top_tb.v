@@ -18,6 +18,12 @@ initial begin
 end
 
 initial begin
+    $dumpfile (".\\build\\wave.vcd");
+    $dumpvars (0,top_tb);
+    #50 $finish;
+end
+
+initial begin
 $monitor("%b",q_out);
 end
 
