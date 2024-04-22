@@ -2,21 +2,22 @@
 vsrc = $(wildcard *.v) 
 
 
-.PHONY: init sim 
+.PHONY: init sim clean
 
 init:
 	vlib work 
 	vmap work work
-	mkdir .\build
 
 com: $(vsrc)
 	vlog $(vsrc)
 
 ivcom: $(vsrc)
-	iverilog -o .\build\top.out $(vsrc)
-	vvp -n .\build\top.out
+	mkdir build
+	iverilog -o ./build/top.out $(vsrc)
+	vvp -n ./build/top.out
+
+clean:
+	rm build 
 	
-
-
 sim:
 	vsim -voptargs=+acc top_tb
