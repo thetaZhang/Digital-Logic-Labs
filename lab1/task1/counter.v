@@ -11,19 +11,22 @@ module counter#(
 
     reg [LOG_THRESHOLD - 1 : 0] counter;
 
-    always @(posedge clk ) 
+    always @(posedge clk or negedge rst_n) 
     begin
         if(rst_n) //分支条件应该为复位
-            counter <= counter + 1; //时序逻辑，非阻塞赋值
+            if (counter < THRESHOLD)
+                counter <= counter + 1; //时序逻辑，非阻塞赋值
+            else
+                counter <= {LOG_THRESHOLD{1'b0}}; // 到达上限要复位
         else
-            counter <= 1'b0; // Reset value when threshold reached
+            counter <={LOG_THRESHOLD{1'b0}}; // counter 位数由LOG_THRESHOLD决定
     end
 
-    always@(counter) begin
+    always@(*) begin //敏感信号列表写*
     if(counter == THRESHOLD - 1) //判断相等用==
-        out_en <= 1'b1;
+        out_en = 1'b1;
     else 
-        out_en <= 1'b0; //写明所有分支 
+        out_en = 1'b0; //写明所有分支,组合逻辑用阻塞赋值
 
     end
 
