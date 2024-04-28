@@ -6,7 +6,7 @@ module seq_detect_tb;
     wire detector;
 
     // Instantiate the design under test (DUT)
-    seq_detect DUT (
+    seq_detect_overlap DUT (
         .clk(clk),
         .rst_n(rst_n),
         .data_in(data_in),
@@ -63,5 +63,12 @@ module seq_detect_tb;
         #10 data_in =0;
         #500 $finish;  // End the simulation
     end
+
+initial begin
+    $dumpfile (".\\build\\wave.vcd");
+    $dumpvars (0,seq_detect_tb);
+end
+
+
 
 endmodule
