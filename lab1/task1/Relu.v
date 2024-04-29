@@ -6,7 +6,7 @@ module ReLU (
     output reg  [7:0] output_data
 );
 
-  wire [7:0] cal_data;  //always只能赋值wire
+  wire [7:0] cal_data;  //assign只能赋值wire
   assign cal_data = input_data[7] ? 8'b0 : input_data;
 
   always @(posedge clk or negedge rst_n) begin

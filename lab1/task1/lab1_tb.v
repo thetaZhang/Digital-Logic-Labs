@@ -20,6 +20,15 @@ module lab1_tb ();
     #2200 relu_input_data = 8'b00101110;
   end
 
+
+initial begin
+    $dumpfile(".\\build\\wave.vcd");
+    $dumpvars(0, lab1_tb);
+    #3000 $finish;
+  end
+
+
+
   counter #(
       .THRESHOLD(COUNTER_THRESHOLD)
   ) u_counter (
