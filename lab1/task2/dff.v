@@ -1,4 +1,4 @@
-// 一bit带低电平有效异步清零的dff
+// 1bit ff
 module dff (
     input d,
     input clk,
