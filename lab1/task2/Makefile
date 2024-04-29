@@ -20,4 +20,11 @@ clean:
 	rm build 
 	
 sim:
-	vsim -voptargs=+acc top_tb
+	vsim -voptargs=+acc top_tb -do "\
+	add wave top_tb/clk_in;\
+	add wave top_tb/rst_in;\
+	add wave top_tb/q_out;\
+	add wave top_tb/u1/q3;\
+	add wave top_tb/u1/q2;\
+	add wave top_tb/u1/q1;\
+	run 100ns"

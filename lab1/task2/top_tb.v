@@ -13,14 +13,13 @@ module top_tb ();
   initial begin
     clk_in = 0;
     rst_in = 1;
-    #10 rst_in = 0;
+    #10 rst_in = 0; // 初始复位
     #10 rst_in = 1;
   end
 
   initial begin
     $dumpfile(".\\build\\wave.vcd");
     $dumpvars(0, top_tb);
-    #50 $finish;
   end
 
   initial begin

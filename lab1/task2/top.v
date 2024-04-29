@@ -1,4 +1,4 @@
-// 顶层模块
+// top module
 
 module top (
     input  clk,
