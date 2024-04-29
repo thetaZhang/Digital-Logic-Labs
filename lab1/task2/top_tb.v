@@ -1,38 +1,36 @@
-`timescale 1ns/10ps
+`timescale 1ns / 10ps
 
-module top_tb();
+module top_tb ();
 
-localparam CLOCK_PERIOD = 10;
+  localparam CLOCK_PERIOD = 10;
 
-reg clk_in,rst_in;
+  reg clk_in, rst_in;
 
-wire q_out;
+  wire q_out;
 
-always #(CLOCK_PERIOD / 2) clk_in = ~clk_in;
+  always #(CLOCK_PERIOD / 2) clk_in = ~clk_in;
 
-initial begin 
+  initial begin
     clk_in = 0;
     rst_in = 1;
     #10 rst_in = 0;
     #10 rst_in = 1;
-end
+  end
 
-initial begin
-    $dumpfile (".\\build\\wave.vcd");
-    $dumpvars (0,top_tb);
+  initial begin
+    $dumpfile(".\\build\\wave.vcd");
+    $dumpvars(0, top_tb);
     #50 $finish;
-end
+  end
 
-initial begin
-$monitor("%b",q_out);
-end
+  initial begin
+    $monitor("%b", q_out);
+  end
 
-top u1(
-    .clk(clk_in),
-    .rst_n(rst_in),
-    .q(q_out)
-);
-
-
+  top u1 (
+      .clk(clk_in),
+      .rst_n(rst_in),
+      .q(q_out)
+  );
 
 endmodule

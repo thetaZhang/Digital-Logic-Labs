@@ -5,7 +5,7 @@ module top (
     input rst_n,
     input data_in,
     
-    output [2:0] data_out
+    output reg [2:0] data_out
 );
 
     
@@ -19,6 +19,18 @@ always @(posedge clk or negedge rst_n) begin
 end
 
 //output 
+always @(*) begin
+    case (data_reg[2:0])
+        3'd0: data_out = 3'd0;
+        3'd1: data_out = 3'd7;
+        3'd2: data_out = 3'd6;
+        3'd3: data_out = 3'd5;
+        3'd4: data_out = 3'd4;
+        3'd5: data_out = 3'd3;
+        3'd6: data_out = 3'd2;
+        3'd7: data_out = 3'd1;
+    endcase
+end
 
 
 
