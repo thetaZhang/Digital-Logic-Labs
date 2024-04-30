@@ -13,7 +13,7 @@ module counter #(
   always @(posedge clk or negedge rst_n) begin
     if (rst_n)  //应该有复位信号
       //时序逻辑应使用非阻塞赋值
-      if (counter < THRESHOLD) counter <= counter + 1;  
+        if (counter < THRESHOLD - 1) counter <= counter + 1;  
       // counter 位数由LOG_THRESHOLD决定
       else counter <= {LOG_THRESHOLD{1'b0}};  
     else counter <= {LOG_THRESHOLD{1'b0}};  
