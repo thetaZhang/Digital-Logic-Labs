@@ -19,4 +19,10 @@ ivcom: $(vsrc)
 
 
 sim:
-	vsim -voptargs=+acc top_tb
+	vsim -voptargs=+acc top_tb -do "\
+	add wave top_tb/clk;\
+	add wave top_tb/rst_n;\
+	add wave top_tb/data_in;\
+	add wave top_tb/data_reg;\
+	add wave top_tb/data_out;\
+	run 20000ns"
