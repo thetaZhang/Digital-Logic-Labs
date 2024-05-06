@@ -19,4 +19,4 @@ ivcom: $(vsrc)
 
 
 sim:
-	vsim -voptargs=+acc top_tb
+	vsim -voptargs=+acc seq_detect_tb

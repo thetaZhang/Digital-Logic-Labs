@@ -5,33 +5,46 @@ module top (
     input rst_n,
     input data_in,
     
-    output reg [2:0] data_out
+    output  [2:0] data_out
 );
 
-    
-//16 bit shift register
-reg [15:0] data_reg;
+// state definition
+    localparam  zero  = 3'b000;
+    localparam  one   = 3'b001;
+    localparam  two   = 3'b010;
+    localparam  three = 3'b011;
+    localparam  four  = 3'b100;
+    localparam  five  = 3'b101;
+    localparam  six   = 3'b110;
+
+// state reg
+reg[2:0] state_cur,state_next;
+
+
+// state transition
 always @(posedge clk or negedge rst_n) begin
     if (~clk) 
-        data_reg <= 16'd0;
+        state_cur <= zero;
     else
-        data_reg <= {data_reg[14:0],data_in};
+        state_cur <= state_next;
 end
 
-//output 
+
+// state switch
 always @(*) begin
-    case (data_reg[2:0])
-        3'd0: data_out = 3'd0;
-        3'd1: data_out = 3'd7;
-        3'd2: data_out = 3'd6;
-        3'd3: data_out = 3'd5;
-        3'd4: data_out = 3'd4;
-        3'd5: data_out = 3'd3;
-        3'd6: data_out = 3'd2;
-        3'd7: data_out = 3'd1;
+    case (state_cur) 
+        zero : state_next = (data_in) ? one   : zero;
+        one  : state_next = (data_in) ? three : two;
+        two  : state_next = (data_in) ? five  : four;
+        three: state_next = (data_in) ? zero  : six;
+        four : state_next = (data_in) ? two   : one;
+        five : state_next = (data_in) ? four  : three;
+        six  : state_next = (data_in) ? six   : five;
     endcase
 end
 
+//output 
+assign data_out = state_cur;
 
 
 endmodule 
