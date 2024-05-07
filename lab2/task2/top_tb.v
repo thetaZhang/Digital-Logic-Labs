@@ -16,26 +16,20 @@ module top_tb;
         .data(data_reg)
     );
 
-    // clock
-    initial begin
-        clk = 0;
-        forever #5 clk = ~clk;
-    end
 
     initial begin
+        clk = 0;
         rst_n = 1;
         data_in = 0;
         #20 rst_n = 0;
         #25 rst_n = 1;
         for (i=0; i<=2000; i=i+1) begin
-            #10 
-            data_in = {$random}%(2'd2);
-            if (data_out != (data_reg % 3'd7)) begin
-                $display("error");
-            end  
-            else begin
-                $display("access");
-            end
+            clk = ~clk;
+            #5 clk = ~clk;
+            #4 data_in = {$random}%(2'd2);
+            if (data_out != (data_reg % 3'd7)) 
+                $display("Error: data_out = %d, data_reg = %d,i = %d",data_out,data_reg,i);
+            #1;
         end
 
         $finish;
