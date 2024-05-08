@@ -24,6 +24,4 @@ sim:
 	add wave top_tb/rst_n;\
 	add wave top_tb/data_in;\
 	add wave top_tb/data_reg;\
-	add wave top_tb/data_out;\
-	
-	run 20000ns"
+	add wave top_tb/data_out"
