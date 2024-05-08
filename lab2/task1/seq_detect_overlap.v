@@ -37,7 +37,7 @@ module seq_detect_overlap(
             STATE_2: state_next = (data_in) ? STATE_3 : STATE_0;
             STATE_3: state_next = (data_in) ? STATE_4 : STATE_2;
             STATE_4: state_next = (data_in) ? STATE_1 : STATE_5;
-            STATE_5: state_next = (data_in) ? STATE_3 : STATE_0;
+            STATE_5: state_next = (data_in) ? STATE_3 : STATE_0; // 相比非重叠，STATE_5的状态转移条件改变
             default: state_next = STATE_0;
         endcase
     end

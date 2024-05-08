@@ -64,10 +64,6 @@ module seq_detect_tb;
         #500 $finish;  // End the simulation
     end
 
-initial begin
-    $dumpfile (".\\build\\wave.vcd");
-    $dumpvars (0,seq_detect_tb);
-end
 
 
 
