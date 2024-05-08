@@ -5,8 +5,7 @@ module top (
     input rst_n,
     input data_in,
     
-    output  [2:0] data_out,
-    output reg [15:0] data
+    output  [2:0] data_out
 );
 
 // state definition
@@ -21,22 +20,35 @@ module top (
 // state reg
 reg[2:0] state_cur,state_next;
 
+//data_reg
+reg[15:0] data;
+
 
 // state transition
 always @(posedge clk or negedge rst_n) begin
     if (~clk) begin
-        data <= 16'd0;
         state_cur <= zero;
     end
     else begin
-        data <= {data[14:0],data_in};
         state_cur <= state_next;
     end
 end
 
+always @(posedge clk or negedge rst_n) begin
+    if (~clk) begin
+        data <= 16'd0;
+    end
+    else begin
+        data <= {data[14:0],data_in};
+    end
+end
+
+
+
 
 // state switch
-always @(*) begin
+always @(*) begin 
+    if (~data[15]) begin
     case (state_cur) 
         zero : state_next = (data_in) ? one   : zero;
         one  : state_next = (data_in) ? three : two;
@@ -47,6 +59,19 @@ always @(*) begin
         six  : state_next = (data_in) ? six   : five;
         default: state_next = zero;
     endcase
+    end
+    else begin
+    case (state_cur)
+        zero : state_next = (data_in) ? six   : five;
+        one  : state_next = (data_in) ? one   : zero;
+        two  : state_next = (data_in) ? three : two;
+        three: state_next = (data_in) ? five  : four;
+        four : state_next = (data_in) ? zero  : six;
+        five : state_next = (data_in) ? two   : one; 
+        six  : state_next = (data_in) ? four  : three;
+    endcase
+    end
+
 end
 
 //output 

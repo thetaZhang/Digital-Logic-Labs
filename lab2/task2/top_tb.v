@@ -4,7 +4,7 @@ module top_tb;
     reg clk,rst_n,data_in;
     wire [2:0] data_out;
 
-    wire [15:0] data_reg;
+    reg  [15:0] data_reg;
 
     integer i;
 
@@ -12,8 +12,7 @@ module top_tb;
         .clk(clk),
         .rst_n(rst_n),
         .data_in(data_in),
-        .data_out(data_out),
-        .data(data_reg)
+        .data_out(data_out)
     );
 
 
@@ -35,6 +34,12 @@ module top_tb;
         $finish;
     end
 
+    always @(posedge clk or negedge rst_n) begin
+        if (~rst_n) 
+            data_reg <= 16'b0;
+        else 
+            data_reg <= {data_reg[14:0],data_in};
+    end
 
 
 endmodule
