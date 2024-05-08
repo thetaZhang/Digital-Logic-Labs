@@ -69,13 +69,14 @@ always @(*) begin
         four : state_next = (data_in) ? zero  : six;
         five : state_next = (data_in) ? two   : one; 
         six  : state_next = (data_in) ? four  : three;
+        default: state_next = zero;
     endcase
     end
 
 end
 
 //output 
-assign data_out = state_cur;
+assign data_out = state_cur; 
 
 
 endmodule 
