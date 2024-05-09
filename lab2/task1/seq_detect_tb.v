@@ -6,7 +6,7 @@ module seq_detect_tb;
     wire detector;
 
     // Instantiate the design under test (DUT)
-    seq_detect_overlap DUT (
+    seq_detect DUT (
         .clk(clk),
         .rst_n(rst_n),
         .data_in(data_in),
