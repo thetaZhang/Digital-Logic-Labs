@@ -10,60 +10,63 @@ output   full;
 output   empty;
 output   half_full;
 output   overflow;
-output   [7:0]   data_r;
+output reg  [7:0]   data_r;
 
-reg  [???:0] wr_ptr;
-reg  [???:0] rd_ptr;
+//读写指针均为5bit，4bit用来指示位reg的地址，MSB用来判定空满
+reg  [4:0] wr_ptr;
+reg  [4:0] rd_ptr;
+
 reg        overflow;
-reg   [7:0]   data_r;
-wire  [7:0]   data_in;
 
-reg [7:0] fifo_mem [0:15];
+reg [7:0] fifo_mem [15:0];
 
 //write function
 always @(posedge clk)
-if()
-   fifo_mem[wr_ptr[3:0]]<=;
+if(w_en && ~full)
+   fifo_mem[wr_ptr[3:0]]<=data_w;
 else
-   fifo_mem[wr_ptr[3:0]]<=;
+   fifo_mem[wr_ptr[3:0]]<=fifo_mem[wr_ptr[3:0]];
  
 //read function 
 always @(posedge clk or negedge rst_n)
 if(!rst_n)
    data_r<=16'b0;
-else if()
-   data_r<=;
+else if(r_en && ~empty)
+   data_r<=fifo_mem[rd_ptr[3:0]];
 else
-   data_r<=;
+   data_r<=8'bzzzzzzzz;
 
 //wr_ptr
 always @(posedge clk or negedge rst_n)
 if(!rst_n)
-   wr_ptr;
-else if()
-   wr_ptr<=;
+   wr_ptr<=0;
+else if(w_en && ~full) // 写使能且没有满时可以写
+   wr_ptr<=wr_ptr+1;
 else
-   wr_ptr<=;
+   wr_ptr<=wr_ptr;
    
 //read_ptr
 always @(posedge clk or negedge rst_n)
 if(!rst_n)
-   rd_ptr<=;
-else if()
-   rd_ptr<=;
+   rd_ptr<=0;
+else if(r_en && ~empty) // 读使能且没有空时可以读 
+   rd_ptr<=rd_ptr+1;
 else
-   rd_ptr<=;
+   rd_ptr<=rd_ptr;
 
 assign  empty=(rd_ptr[4:0] == wr_ptr[4:0]);
-assign  full=;
-assign  half_full=;
+//指针最高位不同而剩下位相同，此时两者之间恰好装了等于最大容量的数据
+assign  full=(rd_ptr[4] ^ wr_ptr[4]) && (rd_ptr[3:0]==wr_ptr[3:0]);
+assign  half_full=((wr_ptr-rd_ptr)==5'd8);
 
 //overflow
 always @(posedge clk or negedge rst_n)
 if(!rst_n)
-   overflow<;
+   overflow<=0;
+else if (w_en & full)
+   overflow<=1;
 else
-   overflow<=;
+   overflow<=0;
    
 
 
