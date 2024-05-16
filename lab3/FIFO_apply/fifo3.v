@@ -22,14 +22,14 @@ reg [2:0] read_state_cur,read_state_next;
 
 // 输出状态定义，1-1表示当前是每3个整除3的组中第一个字节的第一个3
 //状态码表示当前字节内的读地址
-parameter STATE1_1  = 3'b000
-parameter STATE1_2  = 3'b011
-parameter STATE1_3  = 3'b110
-parameter STATE2_1  = 3'b001
-parameter STATE2_2  = 3'b100
-parameter STATE2_3  = 3'b111
-parameter STATE3_1  = 3'b010 
-parameter STATE3_2  = 3'b101
+parameter STATE1_1  = 3'b000;
+parameter STATE1_2  = 3'b011;
+parameter STATE1_3  = 3'b110;
+parameter STATE2_1  = 3'b001;
+parameter STATE2_2  = 3'b100;
+parameter STATE2_3  = 3'b111;
+parameter STATE3_1  = 3'b010;
+parameter STATE3_2  = 3'b101;
 
 
 // read state trans
@@ -78,9 +78,14 @@ if(!rst_n)
    data_r<=3'b0;
 else if(r_en && ~empty)
    case(read_state_cur)
+      STATE1_1: data_r <= fifo_mem[rd_ptr[3:0]][STATE1_1+2:STATE1_1];
+      STATE1_2: data_r <= fifo_mem[rd_ptr[3:0]][STATE1_2+2:STATE1_2];
       STATE1_3: data_r <= {fifo_mem[rd_ptr[3:0]+1][0],fifo_mem[rd_ptr[3:0]][7:STATE1_3]};
+      STATE2_1: data_r <= fifo_mem[rd_ptr[3:0]][STATE2_1+2:STATE2_1];
+      STATE2_2: data_r <= fifo_mem[rd_ptr[3:0]][STATE2_2+2:STATE2_2];
       STATE2_3: data_r <= {fifo_mem[rd_ptr[3:0]+1][1:0],fifo_mem[rd_ptr[3:0]][STATE2_3]};
-      default: data_r <= fifo_mem[rd_ptr[3:0]][read_state_cur+2:read_state_cur];
+      STATE3_1: data_r <= fifo_mem[rd_ptr[3:0]][STATE3_1+2:STATE3_1];
+      STATE3_2: data_r <= fifo_mem[rd_ptr[3:0]][STATE3_2+2:STATE3_2];
    endcase
 else
    data_r<=3'bzzz;
