@@ -18,7 +18,7 @@ reg  [4:0] rd_ptr;
 
 reg        overflow;
 
-reg [7:0] fifo_mem [15:0];
+reg [7:0] fifo_mem [0:15];
 
 //write function
 always @(posedge clk)
@@ -30,7 +30,7 @@ else
 //read function 
 always @(posedge clk or negedge rst_n)
 if(!rst_n)
-   data_r<=16'b0;
+   data_r<=8'b0;
 else if(r_en && ~empty)
    data_r<=fifo_mem[rd_ptr[3:0]];
 else
