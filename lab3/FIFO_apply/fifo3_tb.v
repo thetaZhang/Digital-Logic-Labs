@@ -103,6 +103,8 @@ begin
 		$display("overflow status right\nempty = %b full = %b half_full = %b overflow = %b\n",empty,full,half_full,overflow);
 	end
 	// 读前6个3bit
+	@(negedge clock) w_en=0;r_en=1; // 预先进入读的状态，下个clk posedge就读出，紧接着的哪个negedge执行下面的，这样才能对比。否则一到negedge就判定，都还没读出
+
 	@(negedge clock) w_en=0;r_en=1;
 	$display("reading data %d, your data %d\n",1,out_data);
 	if(out_data!=1)
@@ -150,6 +152,7 @@ begin
 		$display("expected data %d\n your data %d",6,out_data);
 		$stop;
 	end
+	@(negedge clock) w_en=0;r_en=0;
 
 
 	#25;
@@ -190,6 +193,7 @@ begin
 
 	// 读出剩余的两个3bit
 	@(negedge clock) w_en=0;r_en=1;
+	@(negedge clock) w_en=0;r_en=1;
 	$display("reading data %d, your data %d\n",0,out_data);
 	if(out_data!=0)
 	begin
@@ -225,7 +229,7 @@ begin
 	//重新写满
 	@(negedge clock) w_en=1;in_data=3;
 	$display("storing %d again  w_en=%d r_en=%d\n",3,w_en,r_en);
-	@(negedge clock) w_en=0;in_data=3;
+	@(negedge clock) w_en=0;
  	#25;
 	if({empty,half_full,full,overflow}!=4'b0010)
 	begin
