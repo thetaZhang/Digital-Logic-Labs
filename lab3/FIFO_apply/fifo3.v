@@ -52,7 +52,6 @@ always @(*)
       STATE2_3: read_state_next = STATE3_1;
       STATE3_1: read_state_next = STATE3_2;
       STATE3_2: read_state_next = STATE1_1;
-      default: read_state_next  = STATE1_1;
          
    endcase
 
@@ -77,15 +76,15 @@ always @(posedge clk or negedge rst_n)
 if(!rst_n)
    data_r<=3'b0;
 else if(r_en && ~empty)
-   case(read_state_cur)
-      STATE1_1: data_r <= fifo_mem[rd_ptr[3:0]][STATE1_1+2:STATE1_1];
-      STATE1_2: data_r <= fifo_mem[rd_ptr[3:0]][STATE1_2+2:STATE1_2];
-      STATE1_3: data_r <= {fifo_mem[rd_ptr[3:0]+1][0],fifo_mem[rd_ptr[3:0]][7:STATE1_3]};
-      STATE2_1: data_r <= fifo_mem[rd_ptr[3:0]][STATE2_1+2:STATE2_1];
-      STATE2_2: data_r <= fifo_mem[rd_ptr[3:0]][STATE2_2+2:STATE2_2];
-      STATE2_3: data_r <= {fifo_mem[rd_ptr[3:0]+1][1:0],fifo_mem[rd_ptr[3:0]][STATE2_3]};
-      STATE3_1: data_r <= fifo_mem[rd_ptr[3:0]][STATE3_1+2:STATE3_1];
-      STATE3_2: data_r <= fifo_mem[rd_ptr[3:0]][STATE3_2+2:STATE3_2];
+   case(read_state_cur) // 注意：这里面的常数最好定义好位宽，因为若出现进位将可能不确定出现x
+      STATE1_1: data_r <= fifo_mem[rd_ptr[3:0]][STATE1_1+3'd2:STATE1_1];
+      STATE1_2: data_r <= fifo_mem[rd_ptr[3:0]][STATE1_2+3'd2:STATE1_2];
+      STATE1_3: data_r <= {fifo_mem[rd_ptr[3:0]+4'd1][0],fifo_mem[rd_ptr[3:0]][7:STATE1_3]};
+      STATE2_1: data_r <= fifo_mem[rd_ptr[3:0]][STATE2_1+3'd2:STATE2_1];
+      STATE2_2: data_r <= fifo_mem[rd_ptr[3:0]][STATE2_2+3'd2:STATE2_2];
+      STATE2_3: data_r <= {fifo_mem[rd_ptr[3:0]+4'd1][1:0],fifo_mem[rd_ptr[3:0]][STATE2_3]};
+      STATE3_1: data_r <= fifo_mem[rd_ptr[3:0]][STATE3_1+3'd2:STATE3_1];
+      STATE3_2: data_r <= fifo_mem[rd_ptr[3:0]][STATE3_2+3'd2:STATE3_2];
    endcase
 else
    data_r<=3'bzzz;
