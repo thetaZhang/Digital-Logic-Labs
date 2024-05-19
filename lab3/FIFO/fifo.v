@@ -30,7 +30,7 @@ else
 //read function 
 always @(posedge clk or negedge rst_n)
 if(!rst_n)
-   data_r<=8'b0;
+   data_r<=8'bzzzzzzzz;
 else if(r_en && ~empty)
    data_r<=fifo_mem[rd_ptr[3:0]];
 else
