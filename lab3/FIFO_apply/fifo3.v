@@ -115,12 +115,14 @@ else
 //当不够3bit时不能输出，也算空，故需添加上跨越两个8bit的两种特殊情况
 assign  empty=(rd_ptr[4:0] == wr_ptr[4:0]) || ((wr_ptr[4:0] == (rd_ptr[4:0]+1)) && (read_state_cur == STATE1_3)) || ((wr_ptr[4:0] == (rd_ptr[4:0]+1)) && (read_state_cur == STATE2_3));
 
+//判满条件不变
 assign  full=(rd_ptr[4] ^ wr_ptr[4]) && (rd_ptr[3:0]==wr_ptr[3:0]);
+
 //判半满
 //原来的条件上添加8bit完整没有剩余的条件
-assign  half_full=((wr_ptr-rd_ptr)==5'd8) && (read_state_cur == STATE1_1);
-
+assign  half_full=(((wr_ptr>rd_ptr)? (wr_ptr-rd_ptr):(rd_ptr-wr_ptr))==5'd8)&&(read_state_cur == STATE1_1);
 //overflow
+//溢出条件不变
 always @(posedge clk or negedge rst_n)
 if(!rst_n)
    overflow<=0;
