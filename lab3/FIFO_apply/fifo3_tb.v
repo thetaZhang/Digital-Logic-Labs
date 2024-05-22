@@ -253,7 +253,7 @@ begin
 	begin
 	   @(negedge clock) r_en = (i == 42) ? 0 : 1;
 		$display("reading data %d   %d\n",read_test_data[i],out_data);		
-		if(out_data!=read_test_data[i])
+		if(out_data!==read_test_data[i])
 		begin
 			$display("date stored in %d maybe wrong\n",out_data);
 			$stop;
