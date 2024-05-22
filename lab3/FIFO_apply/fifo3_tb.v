@@ -6,9 +6,14 @@ reg	[7:0]	in_data;
 wire	[2:0]	out_data;
 wire		full,empty,half_full,overflow;
 
-reg[2:0] read_test_data [0:41];
 
 integer i;
+
+reg[127:0] read_test_data; // 存储测试
+wire[2:0] test_data_out; // 测试数据输出
+
+assign test_data_out = read_test_data[2:0]; // 始终输出最低3bit 
+
 
 
 fifo3	FIFO(    .clk(clock),
@@ -24,6 +29,7 @@ fifo3	FIFO(    .clk(clock),
 
 initial//test signals status  after reset(full empty half_full)
 begin
+	read_test_data = 0;
 	in_data=0;
 	r_en=0;
 	w_en=0;
@@ -244,20 +250,30 @@ begin
 		$display("full status right\nempty = %b full = %b half_full = %b overflow = %b\n",empty,full,half_full,overflow);
 	end
 
-	$readmemb("read_test_data.txt",read_test_data);
-		
+	//$readmemb("read_test_data.txt",read_test_data);
+	
+	// now fifo : 4 5 6 7 8 9 10 11 12 13 14 15 16 1 2 3 
+
+	// generate test data
+	for (i=1;i<=16;i=i+1)
+	begin
+		@(negedge clock) 
+		read_test_data=read_test_data >> 8; // 移位实现遍历赋值
+		read_test_data[127:120]=((i+3)>16)? (i+3-16) : (i+3); // 每次赋给最高8位，然后右移，实现顺序排列
+	end
 	
 	//read fifo all out
 	@(negedge clock) w_en=0; r_en=1;	
 	for (i=0;i<42;i=i+1)
 	begin
 	   @(negedge clock) r_en = (i == 42) ? 0 : 1;
-		$display("reading data %d   %d\n",read_test_data[i],out_data);		
-		if(out_data!==read_test_data[i])
+		$display("reading data %d   %d\n",test_data_out,out_data);		
+		if(out_data!==test_data_out)
 		begin
 			$display("date stored in %d maybe wrong\n",out_data);
 			$stop;
 		end	
+		read_test_data=read_test_data >> 3;
 	end
 
 	#25;
