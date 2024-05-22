@@ -5,12 +5,12 @@ vsrc = $(wildcard *.v)
 .PHONY: init sim 
 
 init:
-	vlib work 
-	vmap work work
+	vlib.exe work 
+	vmap.exe work work
 	mkdir .\build
 
 com: $(vsrc)
-	vlog $(vsrc)
+	vlog.exe $(vsrc)
 
 ivcom: $(vsrc)
 	iverilog -o .\build\top.out $(vsrc)
@@ -19,5 +19,5 @@ ivcom: $(vsrc)
 
 
 sim:
-	vsim -voptargs=+acc fifo3_tb
+	vsim.exe -voptargs=+acc fifo3_tb
 
