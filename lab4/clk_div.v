@@ -10,7 +10,7 @@ module clk_div (
   reg [15:0] cnt;
 
   always @(posedge clk_100mhz or negedge rst_n)
-    if (~rst_n) cnt <= DIV_CNT;
+    if (~rst_n) cnt <= 16'b0;
     else if (cnt == DIV_CNT) cnt <= 16'd1;
     else cnt <= cnt + 1'b1;
 
@@ -21,7 +21,7 @@ module clk_div (
 
   always @(posedge clk_100mhz or negedge rst_n)
     if (~rst_n) clk_25mhz <= 1'b0;
-    else if (cnt[0] == 1'b0) clk_25mhz <= ~clk_25mhz;
+    else if ((cnt[0] == 1'b0) && cnt ) clk_25mhz <= ~clk_25mhz;
     else clk_25mhz <= clk_25mhz;
 
 endmodule
