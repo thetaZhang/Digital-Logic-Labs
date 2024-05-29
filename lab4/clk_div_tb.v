@@ -4,7 +4,7 @@ module clk_div_tb ();
   wire clk_100, clk_25;
 
   clk_div DUT (
-      .clk_100mhz(clk),
+      .clk(clk),
       .rst_n(rst),
       .clk_100hz(clk_100),
       .clk_25mhz(clk_25)
